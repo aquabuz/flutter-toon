@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:toonflix/screens/home_screen.dart';
 
 void main() {
-  runApp(App());
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
+  const App({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          title: Text("Hello flutter"),
+      theme: ThemeData(
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            color: Color(0xFF232B55),
+          ),
         ),
-        body: Center(
-          child: Text("hello11 world!"),
+        cardColor: const Color(0xFFF4EDDB),
+        colorScheme: ColorScheme.fromSwatch(
+          backgroundColor: const Color(0xFFE7626C),
         ),
       ),
+      home: const HomeScreen(),
     );
   }
 }
