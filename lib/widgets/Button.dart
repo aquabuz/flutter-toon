@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
@@ -26,7 +25,7 @@ class Button extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            fontSize: 15,
+            fontSize: 18,
             color: textColor,
           ),
         ),
