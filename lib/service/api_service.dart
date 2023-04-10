@@ -13,11 +13,11 @@ class ApiService {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final List<dynamic> webttons = jsonDecode(response.body);
-      for (var webtoon in webttons) {
-        webtoonInstances.add(WebttonModel.fromJson(webtoon));
+      final webtoons = jsonDecode(response.body);
+      for (var webtoon in webtoons) {
+        final instance = WebttonModel.fromJson(webtoon);
+        webtoonInstances.add(instance);
       }
-      print(webtoonInstances);
       return webtoonInstances;
     }
     throw Error();
