@@ -21,6 +21,8 @@ class DetailScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         title: Text(
           title,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
         ),
       ),
       body: Column(
@@ -31,21 +33,24 @@ class DetailScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 15,
-                      offset: const Offset(10, 10),
-                      color: Colors.black.withOpacity(0.3),
-                    )
-                  ],
-                ),
-                child: SizedBox(
-                  width: 200,
-                  child: Image.network(thumb),
+              Hero(
+                tag: id,
+                child: Container(
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 15,
+                        offset: const Offset(10, 10),
+                        color: Colors.black.withOpacity(0.3),
+                      )
+                    ],
+                  ),
+                  child: SizedBox(
+                    width: 200,
+                    child: Image.network(thumb),
+                  ),
                 ),
               ),
             ],
