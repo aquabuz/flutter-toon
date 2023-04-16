@@ -6,7 +6,7 @@ import 'package:toonflix/widgets/webtoon_widget.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
-  final Future<List<WebttonModel>> webtoons = ApiService().getTodaysToons();
+  final Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  ListView makeList(AsyncSnapshot<List<WebttonModel>> snapshot) {
+  ListView makeList(AsyncSnapshot<List<WebtoonModel>> snapshot) {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       itemCount: snapshot.data!.length,
