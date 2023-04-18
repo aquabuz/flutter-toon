@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toonflix/models/webtoon_detail_model.dart';
 import 'package:toonflix/models/webtoon_episode_model.dart';
 import 'package:toonflix/service/api_service.dart';
+import 'package:toonflix/widgets/episode_widget.dart';
 
 class DetailScreen extends StatefulWidget {
   final String title, thumb, id;
@@ -20,12 +22,42 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   late Future<WebtoonDetailModel> webtoon;
   late Future<List<WebtoonEpisodeModel>> episodes;
+  late SharedPreferences prefs;
+  bool isLiked = false;
+
+  Future initPref() async {
+    prefs = await SharedPreferences.getInstance();
+    final likedToons = prefs.getStringList('likedToons');
+    if (likedToons != null) {
+      if (likedToons.contains(widget.id) == true) {
+        setState(() {
+          isLiked = true;
+        });
+      }
+    } else {
+      await prefs.setStringList('likedToons', []);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     webtoon = ApiService.getToonById(widget.id);
     episodes = ApiService.getLatestEpisodesById(widget.id);
+    initPref();
+  }
+
+  onHeartTap() async {
+    final likedToons = prefs.getStringList('likedToons');
+    if (isLiked) {
+      likedToons!.remove(widget.id);
+    } else {
+      likedToons!.add(widget.id);
+    }
+    prefs.setStringList('likedToons', likedToons);
+    setState(() {
+      isLiked = !isLiked;
+    });
   }
 
   @override
@@ -42,6 +74,14 @@ class _DetailScreenState extends State<DetailScreen> {
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
         ),
+        actions: [
+          IconButton(
+            onPressed: onHeartTap,
+            icon: Icon(
+              isLiked ? Icons.favorite_outlined : Icons.favorite_outline_outlined,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -107,37 +147,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             if (snapshot.hasData) {
                               return Column(
                                 children: [
-                                  for (var episode in snapshot.data!)
-                                    Container(
-                                        margin: const EdgeInsets.only(
-                                          bottom: 10,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(20),
-                                          color: Colors.green.shade400,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 20,
-                                            vertical: 10,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                episode.title,
-                                                style: const TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              const Icon(
-                                                Icons.chevron_right_rounded,
-                                                color: Colors.white,
-                                              )
-                                            ],
-                                          ),
-                                        )),
+                                  for (var episode in snapshot.data!) Episode(episode: episode, webtoonId: widget.id),
                                 ],
                               );
                             }
