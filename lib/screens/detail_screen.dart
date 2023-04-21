@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toonflix/models/webtoon_detail_model.dart';
@@ -107,7 +108,15 @@ class _DetailScreenState extends State<DetailScreen> {
                       ),
                       child: SizedBox(
                         width: 200,
-                        child: Image.network(widget.thumb),
+                        // child: Image.network(widget.thumb),
+                        child: CachedNetworkImage(
+                          httpHeaders: const {
+                            "User-Agent": ApiService.headers,
+                          },
+                          imageUrl: widget.thumb,
+                          placeholder: (context, url) => const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                        ),
                       ),
                     ),
                   ),

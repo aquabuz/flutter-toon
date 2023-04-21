@@ -6,6 +6,8 @@ import 'package:toonflix/models/webtoon_episode_model.dart';
 import 'package:toonflix/models/webtoon_model.dart';
 
 class ApiService {
+  static const String headers = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36";
+
   static const String baseUrl = "https://webtoon-crawler.nomadcoders.workers.dev";
   static const String today = "today";
 

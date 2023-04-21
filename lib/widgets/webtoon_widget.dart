@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:toonflix/screens/detail_screen.dart';
+import 'package:toonflix/service/api_service.dart';
 
 class Webtoon extends StatelessWidget {
   final String title, thumb, id;
@@ -45,7 +47,14 @@ class Webtoon extends StatelessWidget {
                   ],
                 ),
                 child: SizedBox(
-                  child: Image.network(thumb),
+                  child: CachedNetworkImage(
+                    httpHeaders: const {
+                      "User-Agent": ApiService.headers,
+                    },
+                    imageUrl: thumb,
+                    placeholder: (context, url) => const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                  ),
                 ),
               ),
             ),
